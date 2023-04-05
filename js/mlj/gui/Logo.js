@@ -41,41 +41,23 @@
         var insets = 10;
         var _PiP;
         var _dialog = new MLJ.gui.component.Dialog(
-                {title:"About MeshLabJS",draggable: false, width: 500, modal: true, resizable: false});
+                {title:"filter meshes according to different spinopelvic parameter values and categories",draggable: true, width: 1500, modal: true, resizable: false});
         
         this._make = function () {                 
             _PiP = new component.PiP();
 
-            var $logo = $('<img id="logo" src="img/vcglogo_196px.png">');
+            var $logo = $('<img id="logo" src="https://cdn-icons-png.flaticon.com/512/2080/2080946.png">');
+
+            
 
             _dialog.appendContent(
-                "Copyright(C) 2015<br>"+
-                "<br>"+
-                "<a href=\"http://vcg.isti.cnr.it/%7Ecignoni\">Paolo Cignoni</a> <br>"+
-                "<a href=\"http://vcg.isti.cnr.it\"> Visual Computing Lab</a> <br>"+
-                "<a href=\"http://www.isti.cnr.it\"> ISTI - CNR</a><br><br> "+
-                "<b>MeshLabJS</b> is a web-based mesh processing system for "+
-                "cleaning, filtering, editing and rendering of unstructured 3D triangular meshes. "+
-                "This program is heavily inspired on the original desktop system "+
-                "<a href=\"http://meshlab.sf.net\">MeshLab</a>.<br> "+
-                "Like the original one, for all the mesh processing tasks MeshLabJS relies on the "+
-                "<a href=\"http://vcg.sf.net\">VCG</a> C++ library compiled to asm.js using emscripten "+
-                "<br>"+
-                "<br><b>Authors</b> (in first commit order)<br>"+
-                "Paolo Cignoni (Project Leader) <br> "+
-                "Maurizio Idini<br>"+
-                "Stefano Gabriele <br>"+
-                "Stefano Giammori <br>"+
-                "Gian Maria Delogu <br>"+
-                "Davide Busato<br>"+
-                "Andrea Maggiordomo<br>" +
-                "Antonio Nicoletti<br>" +
-                "Marco Loddo<br>" +
-                "Gabriele Marini<br>" +
-                "Francesco Desogus<br><br>" +
-                "Current version contains " + MLJ.core.plugin.Manager.getFilterPlugins().size() + " filters."
+                '<div class="airtable-embed">'
+                + '<iframe title="SpineView" width="1495px" height="800px" src="https://app.powerbi.com/view?r=eyJrIjoiMjZhNGUzYTctOGUwZS00OGNmLWI2MDYtNjQzN2UxYTQ0Y2JkIiwidCI6IjQyZTFiNDJmLWRlNzQtNDI5MC05ZDNhLTExNDkyNTUzMTM1ZSIsImMiOjl9&embedImagePlaceholder=true&pageName=ReportSection" frameborder="0" allowFullScreen="true"></iframe>'
+                + '</div>' + MLJ.core.plugin.Manager.getFilterPlugins().size() + " filters."
                 );
 
+
+                
             $logo.load(function () {
                 _PiP.appendContent(this);
                 $(this).width(LOGO_WIDTH);
@@ -112,3 +94,5 @@
     MLJ.gui.installWidget("Logo", new _Logo());
 
 })(MLJ.gui.component);
+
+

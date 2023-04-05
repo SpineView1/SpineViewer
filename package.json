@@ -1,0 +1,28 @@
+{
+  "name": "spineview",
+  "version": "1.0.0",
+  "description": "visualize spine models",
+  "main": "server.js",
+  "directories": {
+    "doc": "doc",
+    "test": "test"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cnr-isti-vclab/meshlabjs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cnr-isti-vclab/meshlabjs/issues"
+  },
+  "homepage": "https://github.com/cnr-isti-vclab/meshlabjs#readme"
+}

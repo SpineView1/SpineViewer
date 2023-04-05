@@ -72,34 +72,26 @@ MLJ.core.File = {
     /**
      * Loads 'file' in the virtual file system as an Int8Array and reads it into the layer 'mf'
      */
-    function loadMeshDataFromFile(file, mf, onLoaded) {
-        var fileReader = new FileReader();
-        fileReader.readAsArrayBuffer(file);
-        fileReader.onloadend = function (fileLoadedEvent) {
-            console.log("Read file " + file.name + " size " + fileLoadedEvent.target.result.byteLength + " bytes");
-            console.timeEnd("Read mesh file");
-            //  Emscripten need a Arrayview so from the returned arraybuffer we must create a view of it as 8bit chars
-            var int8buf = new Int8Array(fileLoadedEvent.target.result);
-            FS.createDataFile("/", file.name, int8buf, true, true);
-            console.time("Parsing Mesh Time");
-//            console.log("File extension: " +file.name.split('.').pop());
-            var resOpen = -1;
-            if (file.name.split('.').pop() === "zip")
-                resOpen = mf.cppMesh.openMeshZip(file.name);
-            else
-                resOpen = mf.cppMesh.openMesh(file.name);
-
-            if (resOpen !== 0) {
-                console.log("Ops! Error in Opening File. Try again.");
-                FS.unlink(file.name);
-                onLoaded(false);
-            }
-            console.timeEnd("Parsing Mesh Time");
-            FS.unlink(file.name);
-            onLoaded(true, mf);
-            MLJ.core.Scene.addStateToHistory();
-        };
+    function loadMeshDataFromBuffer(buffer, mf, onLoaded) {
+        console.time("Parsing Mesh Time");
+        //  Emscripten need a Arrayview so from the returned arraybuffer we must create a view of it as 8bit chars
+        var int8buf = new Int8Array(buffer);
+        var fileName = mf.fileName;
+        FS.createDataFile("/", fileName, int8buf, true, true);
+        var resOpen = mf.cppMesh.openMesh(fileName);
+    
+        if (resOpen !== 0) {
+            console.log("Ops! Error in Opening File. Try again.");
+            FS.unlink(fileName);
+            onLoaded(false);
+        }
+    
+        console.timeEnd("Parsing Mesh Time");
+        FS.unlink(fileName);
+        onLoaded(true, mf);
+        MLJ.core.Scene.addStateToHistory();
     }
+    
 
 
 
@@ -128,7 +120,7 @@ MLJ.core.File = {
 
             //Validate file extension
             if (!isExtensionValid(extension)) {
-                console.error("MeshLabJs allows file format '.off', '.ply', '.obj' and '.stl'. \nTry again.");
+                console.error("SpineView allows file format '.off', '.ply', '.obj' and '.stl'. \nTry again.");
                 return;
             }
 
@@ -192,6 +184,78 @@ MLJ.core.File = {
             }
         });
     };
+
+
+    this.openMeshFileFromUrl = function(url) {
+        console.time("Read mesh file");
+        var mf = MLJ.core.Scene.createLayer(url);
+        mf.fileName = url;
+    
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.responseType = 'arraybuffer';
+    
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var buffer = xhr.response;
+                loadMeshDataFromBuffer(buffer, mf, function (loaded, meshFile) {
+                    if (loaded) {
+                        /**
+                         *  Triggered when a mash file is opened
+                         *  @event MLJ.core.File#MeshFileOpened
+                         *  @type {Object}
+                         *  @property {MLJ.core.Layer} meshFile The opened mesh file
+                         *  @example
+                         *  <caption>Event Interception:</caption>
+                         *  $(document).on("MeshFileOpened",
+                         *      function (event, meshFile) {
+                         *          //do something
+                         *      }
+                         *  );
+                         */
+                        $(document).trigger("MeshFileOpened", [meshFile]);
+                    }
+                });
+            } else {
+                console.error("Failed to load mesh file from URL: " + url);
+            }
+        };
+    
+        xhr.send(null);
+    }
+
+
+    this.loadMeshDataFromBuffer = function(buffer, meshFile, callback) {
+        var extension = meshFile.getExtension();
+        var reader;
+    
+        switch (extension) {
+        case ".ply":
+            reader = new MLJ.core.reader.PLYReader();
+            break;
+        case ".obj":
+            reader = new MLJ.core.reader.OBJReader();
+            break;
+        case ".stl":
+            reader = new MLJ.core.reader.STLReader();
+            break;
+        case ".off":
+            reader = new MLJ.core.reader.OFFReader();
+            break;
+        default:
+            console.error("Unsupported file format: " + extension);
+            callback(false, meshFile);
+            return;
+        }
+    
+        reader.readBuffer(buffer, function (mesh) {
+        meshFile.setMesh(mesh);
+        meshFile.setReader(reader);
+        callback(true, meshFile);
+        });
+    }
+    
+
 
     this.saveMeshFile = function (mesh, fileName) {
         //Create data file in FS
@@ -261,7 +325,7 @@ MLJ.core.File = {
             formData.append("modelFile", blob, fileName);
             formData.append("token", data[0].value);
             formData.append("name", data[1].value);
-            formData.append("description", data[2].value + "    \n\Made with **MeshLabJS**, the mesh processing tool on the web. Freely available at [www.meshlabjs.net](http://www.meshlabjs.net)   \n\![MeshLabJS](http://www.meshlabjs.net/img/favicon48.png \"MeshLabJS\")");
+            formData.append("description", data[2].value + "    \n\Made with **SpineView**, the mesh processing tool on the web. Freely available at [www.spineview.io](http://www.spineview.io)   \n\![MeshLabJS](http://www.meshlabjs.net/img/favicon48.png \"SpineView\")");
             formData.append("tags", data[3].value + " meshlab meshlabjs");
             formData.append("private", data[4].value);
             formData.append("password", data[5].value);

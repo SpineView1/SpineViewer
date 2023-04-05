@@ -97,11 +97,6 @@
 
         function init() {
 
-            var open = new component.FileButton({
-                tooltip: "Open mesh file",
-                icon: "img/icons/IcoMoon-Free-master/PNG/48px/0049-folder-open.png",
-                multiple: true
-            });
 
 
             var save = new component.Button({
@@ -181,17 +176,17 @@
             _toolBar.add(doc, git);
             _toolBar.add(unDo, reDo);
             // SCENE BAR EVENT HANDLERS
-            open.onChange(function (input) {
-                MLJ.core.File.openMeshFile(input.files);
+            // open.onChange(function (input) {
+            //     MLJ.core.File.openMeshFile(input.files);
                 
-            });
+            // });
             
             doc.onClick(function () {
                 var win = window.open("./doc/html/", '_blank');
                 win.focus();
             });
             git.onClick(function () {
-                var win = window.open("https://github.com/cnr-isti-vclab/meshlabjs", '_blank');
+                var win = window.open("https://github.com/kchemorion/spineview", '_blank');
                 win.focus();
             });
             unDo.onClick(function ()

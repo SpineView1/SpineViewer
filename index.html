@@ -1,10 +1,21 @@
 <!doctype html>
 <html lang="en">
     <head>
+
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-PY8Y2NJ04V"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-PY8Y2NJ04V');
+        </script>
+
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
         <meta name="description" content="MeshLabJS: the javascript mesh processing tool. Built using vcg library, emscripten and webgl. Developed by the Visual Computing Lab of ISTI - CNR and by the students of the FGT course.">
-        <title>MeshLabJS 16.04</title>
+        <title>SpineView</title>
         <link rel="icon" href="img/favicon.png" type="image/x-icon"/>             
         <link rel="stylesheet" href="js/include/jquery-ui-1.11.4.custom/jquery-ui.min.css">
         <link rel="stylesheet" href="js/include/jquery-ui-1.11.4.custom/jquery-ui.structure.min.css">
@@ -13,8 +24,8 @@
         <!--https://github.com/dobarkod/cookie-banner -->            
         <script type="text/javascript" id="cookiebanner" src="js/include/cookiebanner.js" 
                 data-height="20px" data-position="top" data-mask="true" 
-                data-message="We use cookies to improve MeshLabJS experience. In short we reserve the right of tracking your usage of MeshLabJS for collecting statistical information in aggregate way. Your 3D models will always stay only on your client and no 3D data is ever transmitted. Click anywhere to consent to them and start using MeshLabJS. "
-                data-moreinfo="cookie.html" ></script>        
+                data-message="We use cookies to improve SpineView experience. In short we reserve the right of tracking your usage of SpineView for collecting statistical information in aggregate way. Your edited and processed spine 3D models will always stay only on your client and no 3D data is ever transmitted. Click anywhere to consent to them and start using SpineView. "
+                data-moreinfo="#" ></script>        
         <script src="js/include/jquery-ui-1.11.4.custom/external/jquery/jquery.js"></script>        
         <script src="js/include/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
 
@@ -46,7 +57,8 @@
         <script src="js/mlj/gui/LayersPane.js"></script>
         <script src="js/mlj/gui/TabbedPane.js"></script>
         <script src="js/mlj/gui/Log.js"></script>
-        <script src="js/mlj/gui/Logo.js"></script>        
+        <script src="js/mlj/gui/Logo.js"></script> 
+       
         <script src="js/mlj/gui/Info.js"></script>                    
 
         <script src="js/mlj/core/plugin/Plugin.js"></script>
@@ -82,22 +94,152 @@
         <script src="js/mlj/plugins/rendering/RadianceScaling.js"></script>
         <script src="js/mlj/plugins/rendering/ScreenSpaceAmbientOcclusion.js"></script>
 
-
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-t6zbvU0BjKz7m+8XHJL7pDUTnJZdA1Z8cg+jjIV7+e5g5zlf7Lb9Q1Hpb+5MwkQ1bfJvpZmp+UNPThHKIvBkCg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <script async src="js/generated/MeshLabCppCore.js"></script>
 
         <script src="js/MeshLabJS.js"></script>
 
-        
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+
+        <style>
+            nav {
+  background-color: #333;
+  overflow: hidden;
+}
+
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+nav li {
+  float: left;
+}
+
+nav li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+nav li a:hover {
+  background-color: #111;
+}
+
+        </style>
     </head>
-    <body>        
+    <body>    
+        <nav>
+            <ul>
+              <li>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#contributionsModal">
+                  <i class="fas fa-hand-holding-heart"></i> Contributions
+                </a>
+              </li>
+              <li>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#apiModal">
+                  <i class="fas fa-code"></i> API
+                </a>
+              </li>
+              <li>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#downloadsModal">
+                  <i class="fas fa-download"></i> Downloads
+                </a>
+              </li>
+
+            </ul>
+          </nav>
+          
+        <!-- Contributions Modal -->
+<div class="modal fade" id="contributionsModal" tabindex="-1" aria-labelledby="contributionsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="contributionsModalLabel">Contributions</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Here you can add information about contributions to your website.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- API Modal -->
+  <div class="modal fade" id="apiModal" tabindex="-1" aria-labelledby="apiModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="apiModalLabel">API</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Here you can add information about your API.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Downloads Modal -->
+  <div class="modal fade" id="downloadsModal" tabindex="-1" aria-labelledby="downloadsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="downloadsModalLabel">Downloads</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Here you can add information about downloads from your website.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+
         <script>
+            const urlParams = new URLSearchParams(window.location.search);
+            const filename = urlParams.get('filename') || '111.stl';
+            const filePath = `index.html`;
+
+        
+            function openFile() {
+                MLJ.core.File.openMeshFileFromUrl(filename, function(){});
+            }
+        
             MLJ.core.plugin.Manager.run();
-            MLJ.gui.makeGUI("MeshLabJS");     
+            MLJ.gui.makeGUI("");     
             Module['onRuntimeInitialized'] = function() {
                 filterName = MLJ.util.getURLParam("filterName");
                 if(filterName)
                     MLJ.core.plugin.Manager.executeCreateFilter(filterName);
+        
+                if (filename !== '111.stl') {
+                    // Append the filename query parameter to the current URL
+                    const currentUrl = new URL(window.location.href);
+                    currentUrl.searchParams.set('filename', filename);
+                    history.replaceState({}, '', currentUrl);
+                }
+        
+                MLJ.core.File.openMeshFileFromUrl(filename, function(success, meshFile) {
+                    if (success) {
+                        console.log("Mesh file opened successfully.");
+                    } else {
+                        console.log("Failed to open mesh file.");
+                    }
+                    
+                });
             };
         </script>
+        
+        
+        
     </body>
+
+
 </html>
